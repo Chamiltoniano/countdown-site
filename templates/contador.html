@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Tiempo restante</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="contenedor">
+        <h1>Tiempo restante:</h1>
+        <p id="cuenta"></p>
+        <a href="/">Elegir otra fecha</a>
+    </div>
+
+    <script>
+    const objetivo = new Date("{{ objetivo }}");
+
+    function actualizarCuenta() {
+        const ahora = new Date();
+        const diferencia = objetivo - ahora;
+
+        if (diferencia <= 0) {
+            document.getElementById("cuenta").textContent = "¡Llegó el momento!";
+            return;
+        }
+
+        const dias = Math.floor(diferencia / (1000 * 60 * 60 * 24));
+        const horas = Math.floor((diferencia % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const minutos = Math.floor((diferencia % (1000 * 60 * 60)) / (1000 * 60));
+        const segundos = Math.floor((diferencia % (1000 * 60)) / 1000);
+
+        document.getElementById("cuenta").textContent =
+            `${dias}d ${horas}h ${minutos}m ${segundos}s`;
+    }
+
+    actualizarCuenta();
+    setInterval(actualizarCuenta, 1000);
+    </script>
+</body>
+</html>
